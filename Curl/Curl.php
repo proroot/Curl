@@ -15,7 +15,7 @@ class Curl
     {
         $this->uCurl = curl_init();
 
-        $this->setOption ([
+        $this->setOption([
             CURLINFO_HEADER_OUT    => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true
