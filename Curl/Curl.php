@@ -22,8 +22,8 @@ class Curl
 
         ]);
 
-        $this->setUserAgent (self::DEFAULT_USER_AGENT);
-        $this->setTimeout (self::DEFAULT_TIMEOUT);
+        $this->setUserAgent(self::DEFAULT_USER_AGENT);
+        $this->setTimeout(self::DEFAULT_TIMEOUT);
     }
 
     public function getResponse()
@@ -33,16 +33,16 @@ class Curl
 
     public function exec()
     {
-        $this->uResponse = curl_exec ($this->uCurl);
+        $this->uResponse = curl_exec($this->uCurl);
 
         return $this;
     }
 
-    public function get ($uUrl, array $uData = [])
+    public function get($uUrl, array $uData = [])
     {
-        $this->setURL ($uUrl, $uData);
+        $this->setURL($uUrl, $uData);
 
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPGET       => true
         ]);
@@ -52,14 +52,14 @@ class Curl
         return $this;
     }
 
-    public function post ($uUrl, array $uData = [])
+    public function post($uUrl, array $uData = [])
     {
-        $this->setURL ($uUrl);
+        $this->setURL($uUrl);
 
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POST          => true,
-            CURLOPT_POSTFIELDS    => http_build_query ($uData)
+            CURLOPT_POSTFIELDS    => http_build_query($uData)
         ]);
 
         $this->exec();
@@ -67,117 +67,117 @@ class Curl
         return $this;
     }
 
-    public function setHeader (array $uHeaders)
+    public function setHeader(array $uHeaders)
     {
         foreach ($uHeaders as $uKey => $uValue)
             $this->uHeaders[$uKey] = $uValue;
 
-        $this->setOption ([
-            CURLOPT_HTTPHEADER => array_map (function ($uValue, $uKey)
+        $this->setOption([
+            CURLOPT_HTTPHEADER => array_map(function ($uValue, $uKey)
             {
                 return $uKey . ':' . $uValue;
-            }, $this->uHeaders, array_keys ($this->uHeaders))
+            }, $this->uHeaders, array_keys($this->uHeaders))
         ]);
 
         return $this;
     }
 
-    public function setCookie (array $uCookies)
+    public function setCookie(array $uCookies)
     {
         foreach ($uCookies as $uKey => $uValue)    
             $this->uCookies[$uKey] = $uValue;
 
-        $this->setOption ([
-            CURLOPT_COOKIE => str_replace (
+        $this->setOption([
+            CURLOPT_COOKIE => str_replace(
                 '+',
                 '%20',
-                http_build_query ($this->uCookies, '', ';')
+                http_build_query($this->uCookies, '', ';')
             )
         ]);
 
         return $this;
     }
 
-    public function setCookieFile ($uFile)
+    public function setCookieFile($uFile)
     {
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_COOKIEFILE => $uFile
         ]);
 
         return $this;
     }
 
-    public function setCookieJar ($uJar)
+    public function setCookieJar($uJar)
     {
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_COOKIEJAR => $uJar
         ]);
 
         return $this;
     }
 
-    public function setURL ($uUrl, array $uData = [])
+    public function setURL($uUrl, array $uData = [])
     {
-        $this->uUrl = $this->buildURL ($uUrl, $uData);
+        $this->uUrl = $this->buildURL($uUrl, $uData);
 
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_URL => $this->uUrl
         ]);
 
         return $this;
     }
 
-    public function setReferrer ($uReferrer)
+    public function setReferrer($uReferrer)
     {
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_REFERER => $uReferrer
         ]);
 
         return $this;
     }
 
-    public function setTimeout ($uTimeout)
+    public function setTimeout($uTimeout)
     {
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_TIMEOUT => (int) $uTimeout
         ]);
 
         return $this;
     }
 
-    public function setUserAgent ($uUserAgent)
+    public function setUserAgent($uUserAgent)
     {
-        $this->setOption ([
+        $this->setOption([
             CURLOPT_USERAGENT => $uUserAgent
         ]);
 
         return $this;
     }
 
-    public function setOption (array $uOptions)
+    public function setOption(array $uOptions)
     {
         foreach ($uOptions as $uKey => $uValue)
-            curl_setopt ($this->uCurl, $uKey, $uValue);
+            curl_setopt($this->uCurl, $uKey, $uValue);
 
         return $this;
     }
 
-    private function buildURL ($uUrl, array $uData = [])
+    private function buildURL($uUrl, array $uData = [])
     {
         return $uUrl . (empty ($uData)
             ? ''
-            : '?' . http_build_query ($uData)
+            : '?' . http_build_query($uData)
         );
     }
 
     public function getInfo()
     {
-        return curl_getinfo ($this->uCurl);
+        return curl_getinfo($this->uCurl);
     }
 
     public function close()
     {
-        if (is_resource ($this->uCurl))
-            curl_close ($this->uCurl);
+        if (is_resource($this->uCurl))
+            curl_close($this->uCurl);
     }
 }
