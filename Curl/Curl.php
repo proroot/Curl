@@ -6,7 +6,6 @@ class Curl
     const DEFAULT_USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 
     private $uCurl;
-    private $uBaseUrl  = '';
     private $uUrl      = '';
     private $uResponse = '';
     private $uCookies  = [];
@@ -70,9 +69,6 @@ class Curl
 
     public function setHeader (array $uHeaders)
     {
-        if (empty ($uHeaders))
-            return;
-
         foreach ($uHeaders as $uKey => $uValue)
             $this->uHeaders[$uKey] = $uValue;
 
@@ -88,9 +84,6 @@ class Curl
 
     public function setCookie (array $uCookies)
     {
-        if (empty ($uCookies))
-            return;
-
         foreach ($uCookies as $uKey => $uValue)    
             $this->uCookies[$uKey] = $uValue;
 
@@ -125,8 +118,7 @@ class Curl
 
     public function setURL ($uUrl, array $uData = [])
     {
-        $this->uBaseUrl = $uUrl;
-        $this->uUrl     = $this->buildURL ($uUrl, $uData);
+        $this->uUrl = $this->buildURL ($uUrl, $uData);
 
         $this->setOption ([
             CURLOPT_URL => $this->uUrl
@@ -178,7 +170,7 @@ class Curl
         );
     }
 
-    public function getInfoCurl()
+    public function getInfo()
     {
         return curl_getinfo ($this->uCurl);
     }
