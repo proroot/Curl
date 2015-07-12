@@ -18,8 +18,12 @@ class Curl
         $this->setOption([
             CURLINFO_HEADER_OUT    => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true
-
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_VERBOSE        => true,
+            CURLOPT_ENCODING       => null,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_AUTOREFERER    => true
         ]);
 
         $this->setUserAgent(self::DEFAULT_USER_AGENT);
@@ -38,7 +42,7 @@ class Curl
         return $this;
     }
 
-    public function get($uUrl, array $uData = [])
+    public function get($uUrl, array $uData = [], $uReturnResponse = false)
     {
         $this->setURL($uUrl, $uData);
 
@@ -49,10 +53,10 @@ class Curl
 
         $this->exec();
 
-        return $this;
+        return $uReturnResponse ? $this->getResponse() : $this;
     }
 
-    public function post($uUrl, array $uData = [])
+    public function post($uUrl, array $uData = [], $uReturnResponse = false)
     {
         $this->setURL($uUrl);
 
@@ -64,13 +68,15 @@ class Curl
 
         $this->exec();
 
-        return $this;
+        return $uReturnResponse ? $this->getResponse() : $this;
     }
 
     public function setHeader(array $uHeaders)
     {
         foreach ($uHeaders as $uKey => $uValue)
+        {
             $this->uHeaders[$uKey] = $uValue;
+        }
 
         $this->setOption([
             CURLOPT_HTTPHEADER => array_map(function ($uValue, $uKey)
@@ -84,8 +90,10 @@ class Curl
 
     public function setCookie(array $uCookies)
     {
-        foreach ($uCookies as $uKey => $uValue)    
+        foreach ($uCookies as $uKey => $uValue)
+        {
             $this->uCookies[$uKey] = $uValue;
+        }
 
         $this->setOption([
             CURLOPT_COOKIE => str_replace(
@@ -157,17 +165,16 @@ class Curl
     public function setOption(array $uOptions)
     {
         foreach ($uOptions as $uKey => $uValue)
+        {
             curl_setopt($this->uCurl, $uKey, $uValue);
+        }
 
         return $this;
     }
 
     private function buildURL($uUrl, array $uData = [])
     {
-        return $uUrl . (empty ($uData)
-            ? ''
-            : '?' . http_build_query($uData)
-        );
+        return $uUrl . (empty ($uData) ? '' : '?' . http_build_query($uData));
     }
 
     public function getInfo()
@@ -178,6 +185,8 @@ class Curl
     public function close()
     {
         if (is_resource($this->uCurl))
+        {
             curl_close($this->uCurl);
+        }
     }
 }
