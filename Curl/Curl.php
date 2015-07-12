@@ -189,4 +189,5 @@ class Curl
             curl_close($this->uCurl);
         }
     }
+    
 }
