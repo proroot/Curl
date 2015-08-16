@@ -1,4 +1,4 @@
-<?php namespace Curl;
+<?php namespace Module\Curl;
 
 class Curl
 {
@@ -18,7 +18,7 @@ class Curl
         $this->setOption([
             CURLINFO_HEADER_OUT    => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
+            // CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_VERBOSE        => true,
             CURLOPT_ENCODING       => null,
             CURLOPT_SSL_VERIFYPEER => false,

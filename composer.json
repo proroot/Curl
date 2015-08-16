@@ -1,0 +1,12 @@
+{
+    "name": "minimvc/curl",
+    "type": "library",
+
+    "authors": [
+        {
+            "name": "Il",
+            "homepage": "https://proroot.net",
+            "role": "Developer"
+        }
+    ],
+}
