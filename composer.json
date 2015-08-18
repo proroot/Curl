@@ -1,5 +1,5 @@
 {
-    "name": "curl/curl",
+    "name": "proroot/curl",
     "description": "cURL class for PHP",
     "keywords": ["proroot", "curl"],
     "homepage": "https://github.com/proroot/Curl",
