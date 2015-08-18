@@ -1,5 +1,5 @@
 {
-    "name": "curl",
+    "name": "minimvc/curl",
     "type": "package",
 
     "authors": [
