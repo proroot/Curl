@@ -16,7 +16,7 @@ class Curl
         $this->uCurl = curl_init();
 
         $this->setOption([
-            CURLINFO_HEADER_OUT    => true,
+            // CURLINFO_HEADER_OUT    => true,
             CURLOPT_RETURNTRANSFER => true,
             // CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_VERBOSE        => true,
@@ -42,33 +42,64 @@ class Curl
         return $this;
     }
 
-    public function get($uUrl, array $uData = [], $uReturnResponse = false)
+    public function run($uUrl, array $uOptions, array $uData, $uReturnResponse)
     {
         $this->setURL($uUrl, $uData);
 
-        $this->setOption([
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPGET       => true
-        ]);
+        $this->setOption($uOptions);
 
         $this->exec();
 
         return $uReturnResponse ? $this->getResponse() : $this;
     }
 
+    public function get($uUrl, array $uData = [], $uReturnResponse = false)
+    {
+        $uOptions = [
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPGET       => true
+        ];
+
+        return $this->run($uUrl, $uOptions, $uData, $uReturnResponse);
+    }
+
     public function post($uUrl, array $uData = [], $uReturnResponse = false)
     {
-        $this->setURL($uUrl);
-
-        $this->setOption([
+        $uOptions = [
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POST          => true,
             CURLOPT_POSTFIELDS    => http_build_query($uData)
-        ]);
+        ];
 
-        $this->exec();
+        return $this->run($uUrl, $uOptions, $uData, $uReturnResponse);
+    }
 
-        return $uReturnResponse ? $this->getResponse() : $this;
+    public function put($uUrl, array $uData = [], $uReturnResponse = false)
+    {
+        $uOptions = [
+            CURLOPT_CUSTOMREQUEST => 'PUT'
+        ];
+
+        return $this->run($uUrl, $uOptions, $uData, $uReturnResponse);
+    }
+
+    public function patch($uUrl, array $uData = [], $uReturnResponse = false)
+    {
+        $uOptions = [
+            CURLOPT_CUSTOMREQUEST => 'PATCH',
+            CURLOPT_POSTFIELDS    => http_build_query($uData)
+        ];
+
+        return $this->run($uUrl, $uOptions, $uData, $uReturnResponse);
+    }
+
+    public function delete($uUrl, array $uData = [], $uReturnResponse = false)
+    {
+        $uOptions = [
+            CURLOPT_CUSTOMREQUEST => 'DELETE'
+        ];
+
+        return $this->run($uUrl, $uOptions, $uData, $uReturnResponse);
     }
 
     public function setHeader(array $uHeaders)
@@ -188,6 +219,11 @@ class Curl
         {
             curl_close($this->uCurl);
         }
+    }
+
+    public function __destruct()
+    {
+        $this->close();
     }
     
 }
