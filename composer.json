@@ -1,6 +1,6 @@
 {
     "name": "minimvc/curl",
-    "type": "library",
+    "type": "package",
 
     "authors": [
         {
@@ -8,5 +8,5 @@
             "homepage": "https://proroot.net",
             "role": "Developer"
         }
-    ],
+    ]
 }
